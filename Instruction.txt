@@ -1,0 +1,3 @@
+Open main1.py to start running the application or ;
+Enter to cmd @ this directory:
+> python3 main1.py
