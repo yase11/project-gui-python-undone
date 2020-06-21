@@ -206,9 +206,7 @@ class live_announce(QtWidgets.QDialog, Ui_live_dialog):
 
     def stop_live(self):
         global paused
-        print(paused)
         paused = True
-        print(paused)
 
 
     def switch1(self):
@@ -293,6 +291,7 @@ class live_announce(QtWidgets.QDialog, Ui_live_dialog):
         self.settings.remove("readtext3")
         keys = self.settings.allKeys()
         print(keys)
+
 
 
 #FireDrill ---->
@@ -541,6 +540,381 @@ class config1_3(QtWidgets.QDialog, Ui_conf3_dialog):
         print("ok button was pressed")
 
 
+class config2_1(QtWidgets.QDialog, Ui_conf1_dialog):
+    #setbtn1_1 = pyqtSignal()
+    def __init__(self, parent =None):
+        super(config2_1, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.input_ip= self.lineEdit_1
+        self.input_ip.setValidator(ipValidator)
+
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+        self.buttonBox.accepted.connect(self.ok_pressed1)
+        self.buttonBox.rejected.connect(self.reject)
+
+
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext =self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                 "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext00", self.text1 )
+        self.settings.setValue("readip00",self.ip_addr1)
+        self.settings.setValue('readport00',self.ip_port1)
+        print(self.text1)
+
+
+
+    def ok_pressed1(self):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext00")
+        readip1 = self.settings.value("readip00")
+        readip2 = self.settings.value('readport00')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+
+
+    def closeEvent(self, event):
+        self.settings= QSettings()
+        self.settings.remove("readtext00")
+        self.settings.remove("readip00")
+        self.settings.remove("readport00")
+
+
+class config2_2(QtWidgets.QDialog, Ui_conf2_dialog):
+    #setbtn1_2 = pyqtSignal()
+
+    def __init__(self, parent =None):
+        super(config2_2, self).__init__(parent)
+        self.setupUi(self)
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.textEdit.setReadOnly(True)
+
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.lineEdit_1.setValidator(ipValidator)
+
+        self.input_ip = self.lineEdit_1
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+        #------------------------------
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext01")
+        if readtext1 == None:
+            readtext1="Connect to \nIP address:\nPort:"
+        readip1 = self.settings.value("readip01")
+        readip2 = self.settings.value('readport01')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+        self.buttonBox.rejected.connect(self.reject)
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext = self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                      "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext01", self.text1)
+        self.settings.setValue("readip01", self.ip_addr1)
+        self.settings.setValue('readport01', self.ip_port1)
+        print(self.text1)
+
+
+    def closeEvent(self, event):
+        self.settings = QSettings()
+        readtext1 = self.settings.value("readtext01")
+        readip1 = self.settings.value("readip01")
+        readip2 = self.settings.value('readport01')
+        self.settings.remove("readtext01")
+        self.settings.remove("readip01")
+        self.settings.remove("readport01")
+
+
+
+class config2_3(QtWidgets.QDialog, Ui_conf3_dialog):
+    #setbtn1_3 = pyqtSignal()
+    def __init__(self, parent =None):
+        super(config2_3, self).__init__(parent)
+        self.setupUi(self)
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.textEdit.setReadOnly(True)
+
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.lineEdit_1.setValidator(ipValidator)
+
+        self.input_ip = self.lineEdit_1
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+
+        self.buttonBox.accepted.connect(self.ok_button)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext02")
+        print(readtext1)
+        if readtext1 == None:
+            readtext1 = "Connect to \nIP address:\nPort:"
+        readip1 = self.settings.value("readip02")
+        readip2 = self.settings.value('readport02')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext = self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                      "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext02", self.text1)
+        self.settings.setValue("readip02", self.ip_addr1)
+        self.settings.setValue('readport02', self.ip_port1)
+        print(self.text1)
+
+
+    def closeEvent(self, event):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext02")
+        readip1 = self.settings.value("readip02")
+        readip2 = self.settings.value('readport02')
+        self.settings.remove("readtext02")
+        self.settings.remove("readip02")
+        self.settings.remove("readport02")
+        super(config2_3).__init__()
+
+
+    def ok_button(self):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext02")
+        readip1 = self.settings.value("readip02")
+        readip2 = self.settings.value('readport02')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+        print("ok button was pressed")
+
+
+
+class config3_1(QtWidgets.QDialog, Ui_conf1_dialog):
+    #setbtn1_1 = pyqtSignal()
+    def __init__(self, parent =None):
+        super(config3_1, self).__init__(parent)
+        self.setupUi(self)
+
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.input_ip= self.lineEdit_1
+        self.input_ip.setValidator(ipValidator)
+
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+        self.buttonBox.accepted.connect(self.ok_pressed1)
+        self.buttonBox.rejected.connect(self.reject)
+
+
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext =self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                 "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext03", self.text1 )
+        self.settings.setValue("readip03",self.ip_addr1)
+        self.settings.setValue('readport03',self.ip_port1)
+        print(self.text1)
+
+
+
+    def ok_pressed1(self):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext03")
+        readip1 = self.settings.value("readip03")
+        readip2 = self.settings.value('readport03')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+
+
+    def closeEvent(self, event):
+        self.settings= QSettings()
+        self.settings.remove("readtext03")
+        self.settings.remove("readip03")
+        self.settings.remove("readport03")
+
+
+class config3_2(QtWidgets.QDialog, Ui_conf2_dialog):
+    #setbtn1_2 = pyqtSignal()
+
+    def __init__(self, parent =None):
+        super(config3_2, self).__init__(parent)
+        self.setupUi(self)
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.textEdit.setReadOnly(True)
+
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.lineEdit_1.setValidator(ipValidator)
+
+        self.input_ip = self.lineEdit_1
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+        #------------------------------
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext04")
+        if readtext1 == None:
+            readtext1="Connect to \nIP address:\nPort:"
+        readip1 = self.settings.value("readip04")
+        readip2 = self.settings.value('readport04')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+        self.buttonBox.rejected.connect(self.reject)
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext = self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                      "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext04", self.text1)
+        self.settings.setValue("readip04", self.ip_addr1)
+        self.settings.setValue('readport04', self.ip_port1)
+        print(self.text1)
+
+
+    def closeEvent(self, event):
+        self.settings = QSettings()
+        readtext1 = self.settings.value("readtext04")
+        readip1 = self.settings.value("readip04")
+        readip2 = self.settings.value('readport04')
+        self.settings.remove("readtext04")
+        self.settings.remove("readip04")
+        self.settings.remove("readport04")
+
+
+
+
+class config3_3(QtWidgets.QDialog, Ui_conf3_dialog):
+    # setbtn1_3 = pyqtSignal()
+    def __init__(self, parent=None):
+        super(config3_3, self).__init__(parent)
+        self.setupUi(self)
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.textEdit.setReadOnly(True)
+
+        ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"  # Part of the regular expression
+
+        ipRegex = QRegExp("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+        ipValidator = QRegExpValidator(ipRegex, self)
+        self.lineEdit_1.setValidator(ipValidator)
+
+        self.input_ip = self.lineEdit_1
+        self.input_port = self.lineEdit_2
+        self.input_port.setValidator((QIntValidator()))
+        self.input_port.setMaxLength(5)
+
+        setbutton1 = self.pushButton_1
+        setbutton1.clicked.connect(self.setbutton_click)
+
+        self.buttonBox.accepted.connect(self.ok_button)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext05")
+        print(readtext1)
+        if readtext1 == None:
+            readtext1 = "Connect to \nIP address:\nPort:"
+        readip1 = self.settings.value("readip05")
+        readip2 = self.settings.value('readport05')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+
+    def setbutton_click(self):
+        self.settings = QtCore.QSettings()
+        self.ip_addr1 = self.input_ip.text()
+        self.ip_port1 = self.input_port.text()
+        self.showtext = self.textEdit
+        self.text1 = ("Connect to \nIP address: " + self.ip_addr1 +
+                      "\nPort: \n" + self.ip_port1)
+        showtext1 = self.showtext.setPlainText(self.text1)
+        self.settings.setValue("readtext05", self.text1)
+        self.settings.setValue("readip05", self.ip_addr1)
+        self.settings.setValue('readport05', self.ip_port1)
+        print(self.text1)
+
+    def closeEvent(self, event):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext05")
+        readip1 = self.settings.value("readip05")
+        readip2 = self.settings.value('readport05')
+        self.settings.remove("readtext05")
+        self.settings.remove("readip05")
+        self.settings.remove("readport05")
+        super(config3_3).__init__()
+
+    def ok_button(self):
+        self.settings = QtCore.QSettings()
+        readtext1 = self.settings.value("readtext05")
+        readip1 = self.settings.value("readip05")
+        readip2 = self.settings.value('readport05')
+        self.textEdit.setPlainText(readtext1)
+        self.lineEdit_1.setText(readip1)
+        self.lineEdit_2.setText(readip2)
+        print("ok button was pressed")
+
 
 class StoppableThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
@@ -623,17 +997,17 @@ class Controller:
 
     def show_firea1(self):
         self.window2_2 = FireDrill1()
-        self.window2_2.swt1.connect(self.show_config1_1)
-        self.window2_2.swt2.connect(self.show_config1_2)
-        self.window2_2.swt3.connect(self.show_config1_3)
+        self.window2_2.swt1.connect(self.show_config2_1)
+        self.window2_2.swt2.connect(self.show_config2_2)
+        self.window2_2.swt3.connect(self.show_config2_3)
         self.x2 = self.window2_2.show()
 
 
     def show_eartha1(self):
         self.window2_3 = EarthDrill1()
-        self.window2_3.swt1.connect(self.show_config1_1)
-        self.window2_3.swt2.connect(self.show_config1_2)
-        self.window2_3.swt3.connect(self.show_config1_3)
+        self.window2_3.swt1.connect(self.show_config3_1)
+        self.window2_3.swt2.connect(self.show_config3_2)
+        self.window2_3.swt3.connect(self.show_config3_3)
         self.x3 = self.window2_3.show()
 
     def show_config1_1(self):
@@ -647,6 +1021,31 @@ class Controller:
     def show_config1_3(self):
         self.dialog = config1_3()
         self.dialog.show()
+
+    def show_config2_1(self):
+        self.dialog = config2_1()
+        self.dialog.show()
+
+    def show_config2_2(self):
+        self.dialog = config2_2()
+        self.dialog.show()
+
+    def show_config2_3(self):
+        self.dialog = config2_3()
+        self.dialog.show()
+
+    def show_config3_1(self):
+        self.dialog = config3_1()
+        self.dialog.show()
+
+    def show_config3_2(self):
+        self.dialog = config3_2()
+        self.dialog.show()
+
+    def show_config3_3(self):
+        self.dialog = config3_3()
+        self.dialog.show()
+
 
 # Initialize window
 def mainrun():
