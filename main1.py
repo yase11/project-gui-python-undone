@@ -9,7 +9,7 @@ import pyaudio
 from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyQt5.QtCore import pyqtSignal, QRegExp, QObject, QThread, QSettings
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, qApp
 
 from GUI.main import Ui_MainWindow
 from GUI.afterstream import Ui_afterStream
@@ -372,9 +372,20 @@ class FireDrill1(QtWidgets.QDialog, Ui_fire_dialog):
 
 
 
+    def closeEvent(self, event):
+        close_message = "Save changes on config and drop-down sound list?"
+        QMessageBox.setStyleSheet(self, "QMessageBox {background-color: rgb(226, 226, 226);}")
+        create_reply = QMessageBox.question(self, 'Warning', close_message, QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
 
-
-
+        if create_reply == QMessageBox.Yes:
+            event.accept()
+        elif create_reply == QMessageBox.No:
+            self.settings.remove("songplay")
+            self.settings.remove("songlist")
+            print("Remove changes!")
+            event.accept
+        else:
+            event.ignore()
 
 
 
