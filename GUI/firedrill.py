@@ -120,8 +120,6 @@ class Ui_fire_dialog(object):
         self.comboBox = QtWidgets.QComboBox(self.splitter_2)
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
         self.gridLayout.addWidget(self.splitter_2, 3, 3, 1, 2)
         self.splitter = QtWidgets.QSplitter(self.widget_2)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
@@ -180,9 +178,7 @@ class Ui_fire_dialog(object):
 "Stream 3:\n"
 "STATUS :"))
         self.label.setText(_translate("fire_dialog", "Select Alarm:"))
-        self.comboBox.setItemText(0, _translate("fire_dialog", "Alarm_1"))
-        self.comboBox.setItemText(1, _translate("fire_dialog", "Alarm_2"))
-        self.comboBox.setItemText(2, _translate("fire_dialog", "Add more"))
+        self.comboBox.setItemText(0, _translate("fire_dialog", "Add more"))
         self.pushButton7.setText(_translate("fire_dialog", "PLAY"))
         self.pushButton8.setText(_translate("fire_dialog", "STOP"))
 import resources.icons_rc

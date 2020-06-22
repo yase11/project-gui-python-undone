@@ -1,12 +1,14 @@
+import os
 import socket
 import threading
+from pathlib import Path
 from threading import Thread
 import sys
 import pyaudio
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyQt5.QtCore import pyqtSignal, QRegExp, QObject, QThread, QSettings
-from PyQt5.QtGui import QRegExpValidator, QIntValidator
+from PyQt5.QtGui import QRegExpValidator, QIntValidator, QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from GUI.main import Ui_MainWindow
@@ -19,7 +21,8 @@ from GUI.filetransfer import Ui_fileTr
 from GUI.firedrill import Ui_fire_dialog
 from GUI.liveannou import Ui_live_dialog
 from GUI.onstream import Ui_MainWindow1
-
+from pydub import AudioSegment
+from pydub.playback import play
 
 
 def trap_exc_during_debug(*args):
@@ -306,6 +309,17 @@ class FireDrill1(QtWidgets.QDialog, Ui_fire_dialog):
         self.toolButton1.clicked.connect(self.switch1)
         self.toolButton2.clicked.connect(self.switch2)
         self.toolButton_2.clicked.connect(self.switch3)
+        # self.comboBox_1.removeItem(0)
+        # self.comboBox_1.removeItem(1)
+        # self.comboBox_1.removeItem(2)
+        text1 = self.comboBox.activated[str].connect(self.open_file)
+        self.settings = QSettings()
+        self.songs_list = self.settings.value("songlist")
+        self.song_list_loc = []
+        self.new_list = []
+        self.read_setting()
+        #self.show()
+
 
     def switch1(self):
         self.swt1.emit()
@@ -313,6 +327,56 @@ class FireDrill1(QtWidgets.QDialog, Ui_fire_dialog):
         self.swt2.emit()
     def switch3(self):
         self.swt3.emit()
+
+    def read_setting(self):
+        for i in self.songs_list:
+            self.file_name = Path(i).stem
+            self.song_list_loc.append(self.file_name)
+            #print(self.song_list_loc)
+            self.comboBox.insertItem(0, QIcon("12.png"), self.file_name)
+
+    def open_file(self,name):
+        self.settings = QSettings()
+        if name == "Add more":
+            dialog_title = "Choose a Sound File"
+            sound_file = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, os.path.expanduser('~'),
+                                                               "Sound files (*.mp3 *.wav *.ogg)")
+            self.directory_path = sound_file[0]
+            self.name_file = Path(self.directory_path).stem #set the filename
+
+            if self.name_file !=  "" and  not self.name_file in [self.comboBox.itemText(i) for i in range(self.comboBox.count())] :
+                self.comboBox.insertItem(0, QIcon("12.png"), self.name_file)
+                self.comboBox.setCurrentText(self.name_file)
+                self.location_song = (self.directory_path)
+
+                if not self.location_song in self.song_list_loc:
+                    self.song_list_loc.append(self.location_song)
+                    print(self.song_list_loc)
+                    self.settings.setValue("songplay", self.directory_path)
+                    self.settings.setValue("songlist", self.song_list_loc)
+                else:
+                    print("Already in list")
+                    pass
+
+            else:
+                pass
+
+
+        else:
+            if name != '':
+                song_selected = os.path.expanduser('~/'+name)
+                self.settings.setValue("songplay", song_selected)
+            else:
+                pass
+
+
+
+
+
+
+
+
+
 
 
 #Earthquake Drill ---->
